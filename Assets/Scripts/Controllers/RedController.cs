@@ -70,7 +70,7 @@ public class RedController : MonoBehaviour {
 			obj.SetActive(false);
 			AllBlocker.Add(obj);
 		}
-        GetComponent<Rigidbody2D> ().AddForce (new Vector2 (0, Random.value - 0.5f).normalized * 50, ForceMode2D.Impulse);
+        //GetComponent<Rigidbody2D> ().AddForce (new Vector2 (0, Random.value - 0.5f).normalized * 50, ForceMode2D.Impulse);
     }
 	
 	void FixedUpdate () {
@@ -182,7 +182,7 @@ public class RedController : MonoBehaviour {
 			StartCoroutine (die ());
 		}
         GetComponent<AudioSource> ().volume = 0.1f * Global.stat.SoundModifier;
-        Hover ();
+        //Hover ();
     }
 	void updateLane() {
 		if (Input.GetKeyDown (KeyCode.Alpha8)) {
