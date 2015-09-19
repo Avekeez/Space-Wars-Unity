@@ -12,6 +12,11 @@ public class BoomLogic : MonoBehaviour {
 		gameObject.GetComponent<AudioSource> ().Play ();
 		StartCoroutine (KillOnEnd ());
 	}
+
+    void Update () {
+        GetComponent<AudioSource> ().volume = 0.02f * Global.stat.SoundModifier;
+    }
+
 	private IEnumerator KillOnEnd() {
 		yield return new WaitForSeconds (1);
 		Destroy (gameObject);

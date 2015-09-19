@@ -27,20 +27,20 @@ public class BaseShip : MonoBehaviour {
 		if (team == "Blue") {
 			ship = GameObject.Find("BlueBase");
 			if (lane == 1) {
-				this.transform.position = new Vector2 (-16, 1+ship.transform.position.y);
+				transform.position = new Vector2 (-16, 1+ship.transform.position.y + ship.GetComponent<Rigidbody2D> ().velocity.magnitude * 0.5f);
 			} else if (lane == 2) {
-				this.transform.position = new Vector2 (-16, ship.transform.position.y);
+				transform.position = new Vector2 (-16, ship.transform.position.y + ship.GetComponent<Rigidbody2D> ().velocity.magnitude * 0.5f);
 			} else if (lane == 3) {
-				this.transform.position = new Vector2 (-16, -1+ship.transform.position.y);
+				transform.position = new Vector2 (-16, -1+ship.transform.position.y + ship.GetComponent<Rigidbody2D> ().velocity.magnitude * 0.5f);
 			}
 		} else if (team == "Red") {
 			ship = GameObject.Find("RedBase");
 			if (lane == 1) {
-				this.transform.position = new Vector2 (16, 1+ship.transform.position.y);
+				transform.position = new Vector2 (16, 1+ship.transform.position.y + ship.GetComponent<Rigidbody2D> ().velocity.magnitude * 0.5f);
 			} else if (lane == 2) {
-				this.transform.position = new Vector2 (16, ship.transform.position.y);
+				transform.position = new Vector2 (16, ship.transform.position.y + ship.GetComponent<Rigidbody2D> ().velocity.magnitude * 0.5f);
 			} else if (lane == 3) {
-				this.transform.position = new Vector2 (16, -1+ship.transform.position.y);
+				transform.position = new Vector2 (16, -1+ship.transform.position.y + ship.GetComponent<Rigidbody2D> ().velocity.magnitude * 0.5f);
 			}
 		}
 		StartCoroutine (ignoreBaseTemp ());
@@ -107,6 +107,7 @@ public class BaseShip : MonoBehaviour {
 		if (life <= 0) {
 			die ();
 		}
+        CorrectRotation ();
 	}
 
 	public void ignoreTeamCollisions() {
@@ -178,4 +179,8 @@ public class BaseShip : MonoBehaviour {
 		}
 		die ();
 	}
+
+    void CorrectRotation () {
+        transform.rotation = (Quaternion.Lerp (transform.rotation, Quaternion.identity, 0.1f));
+    }
 }

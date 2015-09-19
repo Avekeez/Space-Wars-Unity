@@ -70,9 +70,10 @@ public class BlueController : MonoBehaviour {
 			obj.SetActive(false);
 			AllBlocker.Add(obj);
 		}
+        GetComponent<Rigidbody2D> ().AddForce (new Vector2 (Random.value - 0.5f, (Random.value - 0.5f) * 2).normalized * 250, ForceMode2D.Impulse);
 	}
 
-	void Update () {
+	void FixedUpdate () {
 		if (canControl) {
 			updateLane ();
 			updateMoney ();
@@ -168,7 +169,10 @@ public class BlueController : MonoBehaviour {
 			if (!hasWon) Opponent.GetComponent<RedController> ().hasWon = true;
 			StartCoroutine (die ());
 		}
-	}
+        GetComponent<AudioSource> ().volume = 0.1f * Global.stat.SoundModifier;
+        Hover ();
+    }
+
 	void updateLane() {
 		if (Input.GetKeyDown (KeyCode.Alpha1)) {
 			selectedLanes[0] = !selectedLanes[0];
@@ -293,4 +297,13 @@ public class BlueController : MonoBehaviour {
 		}
 		gameObject.SetActive (false);
 	}
+
+    void Hover () {
+        if (Vector3.Distance (transform.position, new Vector3 (-16, 0)) > 0.01f) {
+            Vector3 heading = new Vector3 (-16, 0) - transform.position;
+            GetComponent<Rigidbody2D> ().AddForce (heading * 250);
+        } else {
+            GetComponent<Rigidbody2D> ().AddForce (new Vector2 (Random.value-0.5f, (Random.value-0.5f) * 2).normalized*250);
+        }
+    }
 }

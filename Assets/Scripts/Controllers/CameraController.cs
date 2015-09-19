@@ -9,7 +9,7 @@ public class CameraController : MonoBehaviour {
 	public GameObject blue;
 	public GameObject red;
 
-	void Start () {
+	void Awake () {
 		statusBlue.SetActive (false);
 		statusRed.SetActive (false);
 	}
@@ -17,4 +17,7 @@ public class CameraController : MonoBehaviour {
 		statusBlue.SetActive (true);
 		statusRed.SetActive (true);
 	}
+    void Update () {
+        GetComponent<AudioSource> ().volume = 0.1f * Global.stat.MusicModifier;
+    }
 }

@@ -69,12 +69,12 @@ public class Bullet : MonoBehaviour {
 				die ();
 			} else if (other.gameObject.tag == "BlueBullet") {
 				if (Random.value >= 0.5f) {
-					rb.velocity = new Vector2 (-50, rb.velocity.y);
+					rb.velocity = new Vector2 (50, rb.velocity.y);
 				} else {
 					die ();
 				}
 			} else if (other.gameObject.tag == "BlueBlocker") {
-				rb.velocity = new Vector2 (-50, rb.velocity.y);
+				rb.velocity = new Vector2 (50, rb.velocity.y);
 			}
 		}
 	}

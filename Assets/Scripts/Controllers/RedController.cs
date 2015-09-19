@@ -70,9 +70,10 @@ public class RedController : MonoBehaviour {
 			obj.SetActive(false);
 			AllBlocker.Add(obj);
 		}
-	}
+        GetComponent<Rigidbody2D> ().AddForce (new Vector2 (Random.value - 0.5f, (Random.value - 0.5f)).normalized * 250, ForceMode2D.Impulse);
+    }
 	
-	void Update () {
+	void FixedUpdate () {
 		if (canControl) {
 			updateLane ();
 			updateMoney ();
@@ -162,13 +163,15 @@ public class RedController : MonoBehaviour {
 					Instantiate (cannon, transform.position+new Vector3 (0, 1), Quaternion.identity);
 				}
 			}
-		}
+        }
 		if (health <= 0 && !inDeathSequence) {
 			inDeathSequence = true;
 			if (!hasWon) Opponent.GetComponent<BlueController> ().hasWon = true;
 			StartCoroutine (die ());
 		}
-	}
+        GetComponent<AudioSource> ().volume = 0.1f * Global.stat.SoundModifier;
+        Hover ();
+    }
 	void updateLane() {
 		if (Input.GetKeyDown (KeyCode.Alpha8)) {
 			selectedLanes[0] = !selectedLanes[0];
@@ -290,4 +293,13 @@ public class RedController : MonoBehaviour {
 		}
 		gameObject.SetActive (false);
 	}
+
+    void Hover () {
+        if (Vector3.Distance (transform.position, new Vector3 (-16, 0)) > 0.01f) {
+            Vector3 heading = new Vector3 (-16, 0) - transform.position;
+            GetComponent<Rigidbody2D> ().AddForce (heading * 250);
+        } else {
+            GetComponent<Rigidbody2D> ().AddForce (new Vector2 (Random.value-0.5f, (Random.value-0.5f)).normalized*250);
+        }
+    }
 }

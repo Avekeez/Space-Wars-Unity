@@ -16,7 +16,10 @@ public class Global : MonoBehaviour {
 	public int RedSuicideSpawned;
 	public int RedShooterSpawned;
 	public int RedBlockerSpawned;
-	#endregion
+    #endregion
+
+    public int MusicModifier;
+    public int SoundModifier;
 
 	public List<int> Stats = new List<int> () {0, 0, 0, 0, 0, 0, 0, 0};
 
