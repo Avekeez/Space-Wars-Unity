@@ -70,7 +70,7 @@ public class BlueController : MonoBehaviour {
 			obj.SetActive(false);
 			AllBlocker.Add(obj);
 		}
-        GetComponent<Rigidbody2D> ().AddForce (new Vector2 (Random.value - 0.5f, (Random.value - 0.5f) * 2).normalized * 250, ForceMode2D.Impulse);
+        //GetComponent<Rigidbody2D> ().AddForce (new Vector2 (0, (Random.value - 0.5f) * 2).normalized * 100, ForceMode2D.Impulse);
 	}
 
 	void FixedUpdate () {
@@ -159,8 +159,20 @@ public class BlueController : MonoBehaviour {
 					playCreateSound();
 					StartCoroutine(BluBlockWait(totalShips));
 				}
-				if (Input.GetKeyDown (KeyCode.A)) {
-					Instantiate (cannon, transform.position+new Vector3 (0, 0), Quaternion.identity);
+				if (Input.GetKey (KeyCode.A)) {
+                    if (Input.GetKeyDown (KeyCode.Alpha1)) {
+                        cannon.GetComponent<LaserLogic> ().lane = 1;
+                        Instantiate (cannon, transform.position, Quaternion.identity);
+                    }
+                    if (Input.GetKeyDown (KeyCode.Alpha2)) {
+                        cannon.GetComponent<LaserLogic> ().lane = 2;
+                        Instantiate (cannon, transform.position, Quaternion.identity);
+                    }
+                    if (Input.GetKeyDown (KeyCode.Alpha3)) {
+                        cannon.GetComponent<LaserLogic> ().lane = 3;
+                        Instantiate (cannon, transform.position, Quaternion.identity);
+                    }
+                    
 				}
 			}
 		}
@@ -170,7 +182,7 @@ public class BlueController : MonoBehaviour {
 			StartCoroutine (die ());
 		}
         GetComponent<AudioSource> ().volume = 0.1f * Global.stat.SoundModifier;
-        Hover ();
+        //Hover ();
     }
 
 	void updateLane() {
@@ -299,11 +311,11 @@ public class BlueController : MonoBehaviour {
 	}
 
     void Hover () {
-        if (Vector3.Distance (transform.position, new Vector3 (-16, 0)) > 0.01f) {
+        if (Vector3.Distance (transform.position, new Vector3 (-16, 0)) > 0.001f) {
             Vector3 heading = new Vector3 (-16, 0) - transform.position;
-            GetComponent<Rigidbody2D> ().AddForce (heading * 250);
+            GetComponent<Rigidbody2D> ().AddForce (heading * 100);
         } else {
-            GetComponent<Rigidbody2D> ().AddForce (new Vector2 (Random.value-0.5f, (Random.value-0.5f) * 2).normalized*250);
+            GetComponent<Rigidbody2D> ().AddForce (new Vector2 (0, Random.value-0.5f).normalized*100);
         }
     }
 }

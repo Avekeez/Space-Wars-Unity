@@ -22,12 +22,13 @@ public class LaserLogic : MonoBehaviour {
 	private bool startFadeOut;
 	private bool startFadeIn;
 
+    public int lane;
+
 	void Awake () {
+        //lane = 1;
 		particles = transform.GetChild (0).gameObject.GetComponent<ParticleSystem> ();
 		beam = transform.GetChild (1).gameObject.GetComponent<ParticleSystem> ();
 		line = transform.GetChild (2).gameObject.GetComponent<LineRenderer> ();
-		line.SetPosition (0, Vector3.zero);
-		line.SetPosition (1, Vector3.zero);
 		inLaserSequence = false;
 		inSplitSequence = false;
 		isActive = true;
@@ -35,7 +36,8 @@ public class LaserLogic : MonoBehaviour {
 		startFadeIn = false;
 
 		line.sortingLayerName = "Explosion/Fizz";
-
+        transform.position += Vector3.up * -(lane - 2);
+        
 		particles.Play ();
 		Invoke ("beginBeam", 0.5f);
 		Invoke ("drawLine", 1);
@@ -46,21 +48,32 @@ public class LaserLogic : MonoBehaviour {
 
 	void Update () {
 		if (isActive) {
-			if (GameObject.Find ("Splitter") != null) {
+            if (GameObject.Find ("Splitter") != null) {
 				splitter = GameObject.Find ("Splitter");
 				target = splitter.transform.position-transform.position;
 			} else {
 				if (Team == "Blue") {
-					target = new Vector3 (-transform.position.x + 15.27977f, 0, 0);
-				} else if (Team == "Red") {
-					target = new Vector3 (-transform.position.x - 14.7405f, 0, 0);
-				}
+                    RaycastHit2D hit = Physics2D.Raycast (transform.position + Vector3.up * -(lane - 2), Vector3.right, Mathf.Infinity, 1 << 12);
+                    //target = new Vector3 (-transform.position.x + 15.27977f, GameObject.FindGameObjectWithTag ("BlueBase").transform.position.y + (lane - 2));
+                    target = hit.point - Vector2.right * transform.position.x;
+                    Debug.Log (target.x);
+                    line.SetPosition (0, Vector3.up * -(lane - 2));
+                    particles.transform.position = GameObject.FindGameObjectWithTag ("BlueBase").transform.position + Vector3.up * -(lane - 2);
+                    beam.transform.position = GameObject.FindGameObjectWithTag ("BlueBase").transform.position + Vector3.up * -(lane - 2);
+                } else if (Team == "Red") {
+                    RaycastHit2D hit = Physics2D.Raycast (transform.position + Vector3.up * -(lane - 2), -Vector3.right, Mathf.Infinity, 1 << 11);
+                    //target = new Vector3 (-transform.position.x - 14.7405f, GameObject.FindGameObjectWithTag ("RedBase").transform.position.y + (lane - 2));
+                    target = hit.point - Vector2.right * transform.position.x;
+                    line.SetPosition (0, Vector3.up * -(lane - 2));
+                    particles.transform.position = GameObject.FindGameObjectWithTag ("RedBase").transform.position + Vector3.up * -(lane - 2);
+                    beam.transform.position = GameObject.FindGameObjectWithTag ("RedBase").transform.position + Vector3.up * -(lane - 2);
+                }
 			}
 			if (inLaserSequence) {
 				line.SetPosition (1, target);
 				foreach (GameObject obj in GameObject.FindObjectsOfType (typeof (GameObject))) {
 					if (obj.tag.Contains ("Suicide") || obj.tag.Contains ("Shooter") || obj.tag.Contains ("Blocker")) {
-						if (obj.GetComponent<BaseShip> ().lane == 2 && !obj.GetComponent<BaseShip> ().hasSplit) {
+						if (obj.GetComponent<BaseShip> ().lane == lane && !obj.GetComponent<BaseShip> ().hasSplit) {
 							obj.SendMessage ("splitTime", Vector3.Distance (transform.position, obj.transform.position)/16f);
 						}
 					}
