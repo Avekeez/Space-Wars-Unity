@@ -20,6 +20,8 @@ public class BaseShip : MonoBehaviour {
 	public GameObject splitObj;
 	public bool hasSplit;
 
+    public bool targeted;
+
 	void OnEnable () {
 		rb = gameObject.GetComponent<Rigidbody2D> ();
 		life = maxLife;

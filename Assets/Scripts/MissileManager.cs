@@ -4,16 +4,25 @@ using System.Collections;
 public class MissileManager : MonoBehaviour {
 
     public GameObject missileObj;
+    public string Team;
 
-	void Awake () {
-        InvokeRepeating ("Launch", 0, 0.1f);
+    public void Launch () {
+        StartCoroutine ("_Launch");
     }
-
-    void Launch () {
-        Missile mis = missileObj.GetComponent<Missile> ();
-        mis.target = GameObject.Find ("Cursor").transform;
-        mis.direction = Vector2.up;
-        mis.initialPosition = new Vector2 (8*(Random.value - 0.5f), -8);
-        Instantiate (missileObj);
+    IEnumerator _Launch () {
+        for (int i = 0; i < 5; i++) {
+            Missile mis = missileObj.GetComponent<Missile> ();
+            mis.Team = Team;
+            if (Random.value > 0.5f) {
+                mis.direction = -Vector3.up;
+                mis.initialPosition = new Vector2 (transform.position.x + Random.Range (-1, 1), -1.5f);
+            } else {
+                mis.direction = Vector3.up;
+                mis.initialPosition = new Vector2 (transform.position.x + Random.Range (-1, 1), 1.5f);
+            }
+            mis.parent = gameObject;
+            Instantiate (missileObj);
+            yield return new WaitForSeconds (0.2f);
+        }
     }
 }

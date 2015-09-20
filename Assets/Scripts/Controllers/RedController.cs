@@ -14,8 +14,10 @@ public class RedController : MonoBehaviour {
          * [4] Lane 2
          * [5] Lane 3
          * [6] Cannon
+         * [7] Missiles
          */
-        keys = new List<KeyCode> () { KeyCode.I, KeyCode.O, KeyCode.P, KeyCode.Alpha8, KeyCode.Alpha9, KeyCode.Alpha0, KeyCode.K };
+        keys = new List<KeyCode> () { KeyCode.I, KeyCode.O, KeyCode.P, KeyCode.Alpha8, KeyCode.Alpha9, KeyCode.Alpha0, KeyCode.K, KeyCode.L };
         GetComponent<BaseController> ().keys = keys;
+        GetComponent<BaseController> ().Team = "Red";
     }
 }

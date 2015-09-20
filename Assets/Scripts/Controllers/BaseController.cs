@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class BaseController : MonoBehaviour {
     #region Declaration
+    public string Team;
+
     public GameObject Opponent;
 
     public GameObject Suicide;
@@ -182,6 +184,9 @@ public class BaseController : MonoBehaviour {
                         Instantiate (cannon, transform.position, Quaternion.identity);
                     }
                 }
+                if (Input.GetKey (keys[7])) {
+                    GetComponent<MissileManager> ().Launch ();
+                }
             }
         }
         if (health <= 0 && !inDeathSequence) {
@@ -196,11 +201,9 @@ public class BaseController : MonoBehaviour {
     void updateLane () {
         if (Input.GetKeyDown (keys[3])) {
             selectedLanes[0] = !selectedLanes[0];
-            Debug.Log ("ayy");
         }
         if (Input.GetKeyDown (keys[4])) {
             selectedLanes[1] = !selectedLanes[1];
-            Debug.Log ("lmao");
         }
         if (Input.GetKeyDown (keys[5])) {
             selectedLanes[2] = !selectedLanes[2];
@@ -253,7 +256,7 @@ public class BaseController : MonoBehaviour {
         for (int i = 0; i < AllSuicide.Count; i++) {
             if (!AllSuicide[i].activeInHierarchy) {
                 AllSuicide[i].GetComponent<BaseShip> ().lane = lane;
-                AllSuicide[i].GetComponent<BaseShip> ().team = "Blue";
+                AllSuicide[i].GetComponent<BaseShip> ().team = Team;
                 AllSuicide[i].SetActive (true);
                 activeSuicide++;
                 break;
@@ -264,7 +267,7 @@ public class BaseController : MonoBehaviour {
         for (int i = 0; i < AllShooter.Count; i++) {
             if (!AllShooter[i].activeInHierarchy) {
                 AllShooter[i].GetComponent<BaseShip> ().lane = lane;
-                AllShooter[i].GetComponent<BaseShip> ().team = "Blue";
+                AllShooter[i].GetComponent<BaseShip> ().team = Team;
                 AllShooter[i].SetActive (true);
                 activeShooter++;
                 break;
@@ -275,7 +278,7 @@ public class BaseController : MonoBehaviour {
         for (int i = 0; i < AllBlocker.Count; i++) {
             if (!AllBlocker[i].activeInHierarchy) {
                 AllBlocker[i].GetComponent<BaseShip> ().lane = lane;
-                AllBlocker[i].GetComponent<BaseShip> ().team = "Blue";
+                AllBlocker[i].GetComponent<BaseShip> ().team = Team;
                 AllBlocker[i].SetActive (true);
                 activeBlocker++;
                 break;

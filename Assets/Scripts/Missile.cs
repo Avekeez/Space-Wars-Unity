@@ -14,8 +14,15 @@ public class Missile : MonoBehaviour {
 
     bool dead;
 
+    public string Team;
+
+    bool hasTarget;
+
+    public GameObject parent;
+
     void OnEnable () {
         dead = false;
+        hasTarget = false;
         rb = GetComponent<Rigidbody2D> ();
         rb.velocity = direction.normalized * 10;
         transform.position = initialPosition;
@@ -23,6 +30,22 @@ public class Missile : MonoBehaviour {
 
     void FixedUpdate () {
         if (!dead) {
+            if (target == null) {
+                foreach (GameObject ship in GameObject.FindObjectsOfType (typeof (GameObject))) {
+                    if (Team == "Red" && (ship.tag == "BlueSuicide" || ship.tag == "BlueShooter" || ship.tag == "BlueBlocker") && !ship.GetComponent<BaseShip> ().targeted) {
+                        target = ship.transform;
+                        ship.GetComponent<BaseShip> ().targeted = true;
+                        break;
+                    } else if (Team == "Blue" && (ship.tag == "RedSuicide" || ship.tag == "RedShooter" || ship.tag == "RedBlocker") && !ship.GetComponent<BaseShip> ().targeted) {
+                        target = ship.transform;
+                        ship.GetComponent<BaseShip> ().targeted = true;
+                        break;
+                    } else {
+                        target = parent.GetComponent<BaseController> ().Opponent.transform;
+                        target.position += Vector3.up * Random.Range (-1.5f, 1.5f);
+                    }
+                }
+            }
             Vector3 relPoint = transform.InverseTransformPoint (target.position);
             if (relPoint.y > 0) {
                 rb.AddForce (transform.up * 5000);
@@ -39,9 +62,10 @@ public class Missile : MonoBehaviour {
     }
 
     void OnTriggerEnter2D (Collider2D other) {
-        if (other.gameObject.tag != "Missile") {
+        if (other.gameObject.tag.Contains ("Base") || other.gameObject.tag.Contains ("Suicide") || other.gameObject.tag.Contains ("Shooter") || other.gameObject.tag.Contains ("Blocker")) {
             Instantiate (boom, transform.position, Quaternion.identity);
             StartCoroutine (DestroyObj ());
+            other.SendMessage ("Die");
         }
     }
 
