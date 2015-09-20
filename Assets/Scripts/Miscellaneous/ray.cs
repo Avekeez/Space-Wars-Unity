@@ -34,14 +34,6 @@ public class ray : MonoBehaviour {
 					hit.collider.gameObject.GetComponent <BaseShip> ().die ();
 					Debug.Log ("ded");
 				}
-				if (hit.collider.gameObject.GetComponent<BlueController> () != null) {
-					BlueController controller = hit.collider.gameObject.GetComponent<BlueController> ();
-					controller.health -= 100;
-				}
-				if (hit.collider.gameObject.GetComponent<RedController> () != null) {
-					RedController controller = hit.collider.gameObject.GetComponent<RedController> ();
-					controller.health -= 100;
-				}
 			}
 		} else {
 			GetComponent<LineRenderer> ().SetPosition (1, Vector3.zero);

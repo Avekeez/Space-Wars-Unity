@@ -42,11 +42,11 @@ public class Bullet : MonoBehaviour {
 		}
 		if (team == "Blue") {
 			if (other.gameObject.tag == "RedBase") {
-				other.gameObject.GetComponent<RedController> ().health -= damage;
+				other.gameObject.GetComponent<BaseController> ().health -= damage;
 				GameObject.Find ("RedStatusCam").SendMessage ("shake");
 				die ();
 			} else if (other.gameObject.tag == "BlueBase") {
-				other.gameObject.GetComponent<BlueController> ().health -= damage;
+				other.gameObject.GetComponent<BaseController> ().health -= damage;
 				GameObject.Find ("BlueStatusCam").SendMessage ("shake");
 				die ();
 			} else if (other.gameObject.tag == "RedBullet") {
@@ -60,11 +60,11 @@ public class Bullet : MonoBehaviour {
 			}
 		} else if (team == "Red") {
 			if (other.gameObject.tag == "BlueBase") {
-				other.gameObject.GetComponent<BlueController> ().health -= damage;
+				other.gameObject.GetComponent<BaseController> ().health -= damage;
 				GameObject.Find ("BlueStatusCam").SendMessage ("shake");
 				die ();
 			} else if (other.gameObject.tag == "RedBase") {
-				other.gameObject.GetComponent<RedController> ().health -= damage;
+				other.gameObject.GetComponent<BaseController> ().health -= damage;
 				GameObject.Find ("RedStatusCam").SendMessage ("shake");
 				die ();
 			} else if (other.gameObject.tag == "BlueBullet") {

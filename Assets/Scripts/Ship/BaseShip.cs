@@ -49,13 +49,13 @@ public class BaseShip : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D other) {
 		if (team == "Blue") {
 			if (other.gameObject.tag == "RedBase") {
-				other.gameObject.GetComponent<RedController> ().health -= damage;
+				other.gameObject.GetComponent<BaseController> ().health -= damage;
 				GameObject.Find ("RedStatusCam").SendMessage ("shake");
 				explodeSingle ();
 				die();
 			}
 			if (other.gameObject.tag == "BlueBase") {
-				other.gameObject.GetComponent<BlueController> ().health -= damage;
+				other.gameObject.GetComponent<BaseController> ().health -= damage;
 				GameObject.Find ("BlueStatusCam").SendMessage ("shake");
 				explodeSingle ();
 				die();
@@ -70,13 +70,13 @@ public class BaseShip : MonoBehaviour {
 			}
 		} else if (team == "Red") {
 			if (other.gameObject.tag == "BlueBase") {
-				other.gameObject.GetComponent<BlueController> ().health -= damage;
+				other.gameObject.GetComponent<BaseController> ().health -= damage;
 				GameObject.Find ("BlueStatusCam").SendMessage ("shake");
 				explodeSingle ();
 				die();
 			}
 			if (other.gameObject.tag == "RedBase") {
-				other.gameObject.GetComponent<RedController> ().health -= damage;
+				other.gameObject.GetComponent<BaseController> ().health -= damage;
 				GameObject.Find ("RedStatusCam").SendMessage ("shake");
 				explodeSingle ();
 				die();
@@ -139,21 +139,21 @@ public class BaseShip : MonoBehaviour {
 		if (ship != null) {
 			if (GetComponent<Suicide> () != null) {
 				if (team == "Blue") {
-					ship.GetComponent<BlueController> ().activeSuicide --;
+					ship.GetComponent<BaseController> ().activeSuicide --;
 				} else if (team == "Red") {
-					ship.GetComponent<RedController> ().activeSuicide --;
+					ship.GetComponent<BaseController> ().activeSuicide --;
 				}
 			} else if (GetComponent<Shooter> () != null) {
 				if (team == "Blue") {
-					ship.GetComponent<BlueController> ().activeShooter --;
+					ship.GetComponent<BaseController> ().activeShooter --;
 				} else if (team == "Red") {
-					ship.GetComponent<RedController> ().activeShooter --;
+					ship.GetComponent<BaseController> ().activeShooter --;
 				}
 			} else if (GetComponent<Blocker> () != null) {
 				if (team == "Blue") {
-					ship.GetComponent<BlueController> ().activeBlocker --;
+					ship.GetComponent<BaseController> ().activeBlocker --;
 				} else if (team == "Red") {
-					ship.GetComponent<RedController> ().activeBlocker --;
+					ship.GetComponent<BaseController> ().activeBlocker --;
 				}
 			}
 		}
