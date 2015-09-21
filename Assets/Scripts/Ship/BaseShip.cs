@@ -160,7 +160,12 @@ public class BaseShip : MonoBehaviour {
 			}
 		}
 		transform.eulerAngles = Vector3.zero;
-		gameObject.SetActive (false);
+        if (team == "Blue") {
+            transform.position = new Vector3 (-16, 0);
+        } else if (team == "Red") {
+            transform.position = new Vector3 (16, 0);
+        }
+        gameObject.SetActive (false);
 	}
 
 	public void checkOutsideBounds() {

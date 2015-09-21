@@ -43,6 +43,8 @@ public class BaseController : MonoBehaviour {
     public List<GameObject> AllShooter;
     public List<GameObject> AllBlocker;
 
+    public List<GameObject> AllShips;
+
     public GameObject boom;
     public GameObject cannon;
     private bool inDeathSequence;
@@ -82,9 +84,10 @@ public class BaseController : MonoBehaviour {
         } else if (GetComponent<RedController> () != null) {
             keys = GetComponent<RedController> ().keys;
         }
+        Debug.Log (transform.position);
     }
 
-    void FixedUpdate () {
+    void Update () {
         if (canControl) {
             updateLane ();
             updateMoney ();
@@ -184,8 +187,10 @@ public class BaseController : MonoBehaviour {
                         Instantiate (cannon, transform.position, Quaternion.identity);
                     }
                 }
-                if (Input.GetKey (keys[7])) {
+                if (Input.GetKeyDown (keys[7])) {
+                    if (GetComponent<MissileManager> ().GetMissile () != null) {
                     GetComponent<MissileManager> ().Launch ();
+                    }
                 }
             }
         }
@@ -319,11 +324,11 @@ public class BaseController : MonoBehaviour {
         if (!hasWon) {
             Application.LoadLevelAdditive (2);
             yield return new WaitForSeconds (1);
-            GameObject.Find ("BlueStatusCam").SetActive (false);
+            GameObject.Find (Team + "StatusCam").SetActive (false);
             yield return new WaitForSeconds (1);
-            GameObject.Find ("RedStatusCam").SetActive (false);
+            GameObject.Find (Opponent.GetComponent<BaseController> ().Team + "StatusCam").SetActive (false);
             yield return new WaitForSeconds (1);
-            GameObject.Find ("WinScreen").SendMessage ("setWinScreen", "Red");
+            GameObject.Find ("WinScreen").SendMessage ("setWinScreen", Opponent.GetComponent<BaseController> ().Team);
         }
         gameObject.SetActive (false);
     }

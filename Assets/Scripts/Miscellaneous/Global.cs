@@ -31,6 +31,10 @@ public class Global : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.Escape)) {
 			Application.Quit();
 		}
+        if (Input.GetKey (KeyCode.BackQuote)) {
+            GameObject.Find ("BlueBase").GetComponent<BaseController> ().money += 100;
+            GameObject.Find ("RedBase").GetComponent<BaseController> ().money += 100;
+        }
 		Stats [0] = BlueSuicideSpawned;
 		Stats [1] = BlueShooterSpawned;
 		Stats [2] = BlueBlockerSpawned;
