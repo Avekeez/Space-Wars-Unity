@@ -16,15 +16,14 @@ public class Missile : MonoBehaviour {
 
     public string Team;
 
-    bool hasTarget;
-
     public GameObject parent;
+
+	public float speed;
 
     void OnEnable () {
         dead = false;
-        hasTarget = false;
         rb = GetComponent<Rigidbody2D> ();
-        rb.velocity = direction.normalized * 10;
+        rb.velocity = direction.normalized * speed;
         transform.position = initialPosition;
         //Invoke ("Die", 10);
         GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 1);
@@ -82,14 +81,14 @@ public class Missile : MonoBehaviour {
             
 
             if (relPoint.y > 0) {
-                rb.AddForce (transform.up * 4000);
+                rb.AddForce (transform.up * 8000);
             } else if (relPoint.y < 0) {
-                rb.AddForce (-transform.up * 4000);
+                rb.AddForce (-transform.up * 8000);
             }
             Vector3 dir = rb.velocity;
             float angle = Mathf.Atan2 (dir.y, dir.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
-            rb.velocity = rb.velocity.normalized * 10;
+            rb.velocity = rb.velocity.normalized * speed;
         } else {
             rb.velocity = Vector3.zero;
         }
