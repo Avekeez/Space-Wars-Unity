@@ -77,9 +77,13 @@ public class Bullet : MonoBehaviour {
 				rb.velocity = new Vector2 (50, rb.velocity.y);
 			}
 		}
+        if (tag == "Boundary") {
+            gameObject.SetActive (false);
+        }
 	}
 	void FixedUpdate () {
-		ignoreTeamCollision ();
+        damage = Mathf.FloorToInt (rb.velocity.magnitude / 20f);
+        ignoreTeamCollision ();
 		checkOutsideBounds ();
 		if (team == "Blue") {
 			foreach (GameObject i in GameObject.FindGameObjectsWithTag("BlueShooter")) {

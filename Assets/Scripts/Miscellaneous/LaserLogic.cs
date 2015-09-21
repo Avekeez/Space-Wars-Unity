@@ -74,16 +74,16 @@ public class LaserLogic : MonoBehaviour {
                     beam.transform.position = GameObject.FindGameObjectWithTag ("RedBase").transform.position + Vector3.up * -(lane - 2);
                 }
 			}
-			if (inLaserSequence) {
-				line.SetPosition (1, target - Vector3.up * -(lane - 2));
-				foreach (GameObject obj in GameObject.FindObjectsOfType (typeof (GameObject))) {
-					if (obj.tag.Contains ("Suicide") || obj.tag.Contains ("Shooter") || obj.tag.Contains ("Blocker")) {
-						if (obj.GetComponent<BaseShip> ().lane == lane && !obj.GetComponent<BaseShip> ().hasSplit) {
-							obj.SendMessage ("splitTime", Vector3.Distance (transform.position, obj.transform.position)/16f);
-						}
-					}
-				}
-				if (splitter != null && !inSplitSequence) {
+            if (inLaserSequence) {
+                line.SetPosition (1, target - Vector3.up * -(lane - 2));
+                foreach (GameObject obj in GameObject.FindObjectsOfType (typeof (GameObject))) {
+                    if (obj.tag.Contains ("Suicide") || obj.tag.Contains ("Shooter") || obj.tag.Contains ("Blocker")) {
+                        if (obj.GetComponent<BaseShip> ().lane == lane && !obj.GetComponent<BaseShip> ().hasSplit) {
+                            obj.SendMessage ("splitTime", Vector3.Distance (transform.position, obj.transform.position) / 32);
+                        }
+                    }
+                }
+                if (splitter != null && !inSplitSequence) {
 					inSplitSequence = true;
 					StartCoroutine (splitSequence ());
 				}
