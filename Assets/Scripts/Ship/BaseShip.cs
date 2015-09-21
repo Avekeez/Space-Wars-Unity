@@ -140,23 +140,11 @@ public class BaseShip : MonoBehaviour {
 	public void die() {
 		if (ship != null) {
 			if (GetComponent<Suicide> () != null) {
-				if (team == "Blue") {
-					ship.GetComponent<BaseController> ().activeSuicide --;
-				} else if (team == "Red") {
-					ship.GetComponent<BaseController> ().activeSuicide --;
-				}
+				ship.GetComponent<BaseController> ().activeSuicide --;
 			} else if (GetComponent<Shooter> () != null) {
-				if (team == "Blue") {
-					ship.GetComponent<BaseController> ().activeShooter --;
-				} else if (team == "Red") {
-					ship.GetComponent<BaseController> ().activeShooter --;
-				}
+				ship.GetComponent<BaseController> ().activeShooter --;
 			} else if (GetComponent<Blocker> () != null) {
-				if (team == "Blue") {
-					ship.GetComponent<BaseController> ().activeBlocker --;
-				} else if (team == "Red") {
-					ship.GetComponent<BaseController> ().activeBlocker --;
-				}
+				ship.GetComponent<BaseController> ().activeBlocker --;
 			}
 		}
 		transform.eulerAngles = Vector3.zero;
@@ -166,6 +154,17 @@ public class BaseShip : MonoBehaviour {
             transform.position = new Vector3 (16, 0);
         }
         gameObject.SetActive (false);
+	}
+
+	void OnTriggerEnter2D (Collider2D other) {
+		if (other.gameObject.tag == "Shield") {
+			GameObject ship = other.gameObject.transform.parent.gameObject;
+			print ("ayy");
+			if (other.GetComponent<BaseController> ().Team != team) {
+				explodeSingle ();
+				die ();
+			}
+		}
 	}
 
 	public void checkOutsideBounds() {
