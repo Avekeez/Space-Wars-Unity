@@ -14,4 +14,8 @@ public class Shield : MonoBehaviour {
         particleShield.Play ();
         particleField.Play ();
     }
+
+	void Disable () {
+
+	}
 }
