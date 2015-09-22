@@ -53,6 +53,7 @@ public class LaserLogic : MonoBehaviour {
 	}
 
 	void Update () {
+        GetComponent<AudioSource> ().volume = 0.1f * Global.stat.SoundModifier;
 		if (isActive) {
             if (GameObject.Find ("Splitter") != null) {
 				splitter = GameObject.Find ("Splitter");

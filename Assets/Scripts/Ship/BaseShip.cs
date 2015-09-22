@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class BaseShip : MonoBehaviour {
 	public int lane;
@@ -45,6 +46,7 @@ public class BaseShip : MonoBehaviour {
 				transform.position = new Vector2 (16, -1+ship.transform.position.y + ship.GetComponent<Rigidbody2D> ().velocity.magnitude * 0.5f);
 			}
 		}
+        transform.GetChild (0).gameObject.GetComponent<ParticleSystem> ().Play ();
 		StartCoroutine (ignoreBaseTemp ());
 	}
 
@@ -114,10 +116,7 @@ public class BaseShip : MonoBehaviour {
 
 	public void ignoreTeamCollisions() {
 		foreach (GameObject i in GameObject.FindObjectsOfType (typeof (GameObject))) {
-			if (i.tag.Contains("Blue") && team == "Blue") {
-				Physics2D.IgnoreCollision(gameObject.GetComponent<BoxCollider2D> (), i.GetComponent<BoxCollider2D> ());
-			}
-			if (i.tag.Contains("Red") && team == "Red") {
+			if (i.tag.Contains(team)) {
 				Physics2D.IgnoreCollision(gameObject.GetComponent<BoxCollider2D> (), i.GetComponent<BoxCollider2D> ());
 			}
 		}
@@ -160,12 +159,22 @@ public class BaseShip : MonoBehaviour {
 		if (other.gameObject.tag == "Shield") {
 			GameObject ship = other.gameObject.transform.parent.gameObject;
 			print ("ayy");
-			if (other.GetComponent<BaseController> ().Team != team) {
-				explodeSingle ();
-				die ();
+			if (ship.GetComponent<BaseController> ().Team != team) {
+                transform.GetChild (1).gameObject.GetComponent<ParticleSystem> ().Play ();
+                StartCoroutine (Disintegrate ());
 			}
 		}
 	}
+
+    IEnumerator Disintegrate () {
+        GetComponent<BoxCollider2D> ().enabled = false;
+        GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 0);
+        transform.GetChild (0).gameObject.GetComponent<ParticleSystem> ().Stop ();
+        yield return new WaitForSeconds (0.5f);
+        GetComponent<BoxCollider2D> ().enabled = true;
+        GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 1);
+        die ();
+    }
 
 	public void checkOutsideBounds() {
 		if (!gameObject.GetComponent<BoxCollider2D> ().bounds.Intersects (GameObject.Find ("space").GetComponent<BoxCollider2D> ().bounds)) {

@@ -81,7 +81,26 @@ public class Bullet : MonoBehaviour {
             gameObject.SetActive (false);
         }
 	}
-	void FixedUpdate () {
+    void OnTriggerEnter2D (Collider2D other) {
+        if (other.gameObject.tag == "Shield") {
+            GameObject ship = other.gameObject.transform.parent.gameObject;
+            print ("ayy");
+            if (ship.GetComponent<BaseController> ().Team != team) {
+                transform.GetChild (1).gameObject.GetComponent<ParticleSystem> ().Play ();
+                StartCoroutine (Disintegrate ());
+            }
+        }
+    }
+    IEnumerator Disintegrate () {
+        GetComponent<BoxCollider2D> ().enabled = false;
+        GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 0);
+        transform.GetChild (0).gameObject.GetComponent<ParticleSystem> ().Stop ();
+        yield return new WaitForSeconds (0.5f);
+        GetComponent<BoxCollider2D> ().enabled = true;
+        GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 1);
+        die ();
+    }
+    void FixedUpdate () {
         damage = Mathf.FloorToInt (rb.velocity.magnitude / 20f);
         ignoreTeamCollision ();
 		checkOutsideBounds ();

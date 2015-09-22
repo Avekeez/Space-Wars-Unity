@@ -27,6 +27,7 @@ public class Missile : MonoBehaviour {
         transform.position = initialPosition;
         //Invoke ("Die", 10);
         GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 1);
+        GetComponent<AudioSource> ().volume = 0.03f * Global.stat.SoundModifier;
     }
 
     void FixedUpdate () {
