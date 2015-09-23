@@ -21,6 +21,7 @@ public class BaseController : MonoBehaviour {
     private bool canBuildSuicide = true;
     private bool canBuildShooter = true;
     private bool canBuildBlocker = true;
+    private bool canSpecial = true;
     private bool canGiveMoney = true;
 
     public int money = 30;
@@ -173,23 +174,38 @@ public class BaseController : MonoBehaviour {
                     playCreateSound ();
                     StartCoroutine (BlockWait (totalShips));
                 }
-                if (Input.GetKey (keys[6])) {
-                    if (Input.GetKeyDown (keys[3])) {
-                        cannon.GetComponent<LaserLogic> ().lane = 1;
-                        Instantiate (cannon, transform.position, Quaternion.identity);
+                if (canSpecial) {
+                    if (Input.GetKey (keys[6])) {
+                        if (Input.GetKeyDown (keys[3])) {
+                            cannon.GetComponent<LaserLogic> ().lane = 1;
+                            Instantiate (cannon, transform.position, Quaternion.identity);
+                            money -= 50;
+                            StartCoroutine (SpecialWait ());
+                        }
+                        if (Input.GetKeyDown (keys[4])) {
+                            cannon.GetComponent<LaserLogic> ().lane = 2;
+                            Instantiate (cannon, transform.position, Quaternion.identity);
+                            money -= 50;
+                            StartCoroutine (SpecialWait ());
+                        }
+                        if (Input.GetKeyDown (keys[5])) {
+                            cannon.GetComponent<LaserLogic> ().lane = 3;
+                            Instantiate (cannon, transform.position, Quaternion.identity);
+                            money -= 50;
+                            StartCoroutine (SpecialWait ());
+                        }
                     }
-                    if (Input.GetKeyDown (keys[4])) {
-                        cannon.GetComponent<LaserLogic> ().lane = 2;
-                        Instantiate (cannon, transform.position, Quaternion.identity);
+                    if (Input.GetKeyDown (keys[7])) {
+                        if (GetComponent<MissileManager> ().GetMissile () != null) {
+                            GetComponent<MissileManager> ().Launch ();
+                            money -= 25;
+                            StartCoroutine (SpecialWait ());
+                        }
                     }
-                    if (Input.GetKeyDown (keys[5])) {
-                        cannon.GetComponent<LaserLogic> ().lane = 3;
-                        Instantiate (cannon, transform.position, Quaternion.identity);
-                    }
-                }
-                if (Input.GetKeyDown (keys[7])) {
-                    if (GetComponent<MissileManager> ().GetMissile () != null) {
-                    GetComponent<MissileManager> ().Launch ();
+                    if (Input.GetKeyDown (keys[8])) {
+                        transform.GetChild (0).gameObject.SetActive (true);
+                        money -= 100;
+                        StartCoroutine (SpecialWait ());
                     }
                 }
             }
@@ -253,6 +269,11 @@ public class BaseController : MonoBehaviour {
         canBuildBlocker = false;
         yield return new WaitForSeconds (BlockerCooldown * shipsBuilt);
         canBuildBlocker = true;
+    }
+    public IEnumerator SpecialWait () {
+        canSpecial = false;
+        yield return new WaitForSeconds (8);
+        canSpecial = true;
     }
     #endregion
 
