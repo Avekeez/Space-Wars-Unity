@@ -94,12 +94,12 @@ public class Bullet : MonoBehaviour {
     IEnumerator Disintegrate () {
         GetComponent<BoxCollider2D> ().enabled = false;
         GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 0);
-        //transform.GetChild (0).gameObject.GetComponent<ParticleSystem> ().Stop ();
+        transform.GetChild (0).gameObject.GetComponent<ParticleSystem> ().Play ();
 		rb.velocity = Vector3.zero;
         yield return new WaitForSeconds (0.5f);
         GetComponent<BoxCollider2D> ().enabled = true;
         GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 1);
-        die ();
+        gameObject.SetActive (false);
     }
     void FixedUpdate () {
         damage = Mathf.FloorToInt (rb.velocity.magnitude / 20f);

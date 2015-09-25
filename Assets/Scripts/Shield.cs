@@ -24,7 +24,9 @@ public class Shield : MonoBehaviour {
 	IEnumerator _Disable () {
         particleShield.Stop ();
         particleField.Stop ();
+        GetComponent<CircleCollider2D> ().enabled = false;
         yield return new WaitForSeconds (1);
+        GetComponent<CircleCollider2D> ().enabled = true;
         gameObject.SetActive (false);
 	}
 }

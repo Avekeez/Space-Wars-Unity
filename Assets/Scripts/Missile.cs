@@ -110,7 +110,27 @@ public class Missile : MonoBehaviour {
                 other.GetComponent<Bullet> ().die ();
             }
 		}
-	}
+        if (other.gameObject.tag == "Shield") {
+            GameObject ship = other.gameObject.transform.parent.gameObject;
+            if (ship.GetComponent<BaseController> ().Team != parent.GetComponent<BaseController> ().Team) {
+                transform.GetChild (1).gameObject.GetComponent<ParticleSystem> ().Play ();
+                StartCoroutine (Disintegrate ());
+                //Die ();
+            }
+        }
+    }
+
+    IEnumerator Disintegrate () {
+        dead = true;
+        GetComponent<BoxCollider2D> ().enabled = false;
+        GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 0);
+        transform.GetChild (0).gameObject.GetComponent<ParticleSystem> ().Stop ();
+        yield return new WaitForSeconds (0.5f);
+        GetComponent<BoxCollider2D> ().enabled = true;
+        GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 1);
+        gameObject.SetActive (false);
+
+    }
 
     void Die () {
         if (gameObject.activeInHierarchy) {
