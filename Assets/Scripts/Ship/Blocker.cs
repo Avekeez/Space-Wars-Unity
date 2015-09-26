@@ -13,6 +13,9 @@ public class Blocker : MonoBehaviour {
 		ship.maxSpeed = 1;
         GetComponent<AudioSource> ().volume = 0.01f * Global.stat.SoundModifier;
 	}
+	void Update () {
+		//GetComponent<AudioSource> ().volume = 0.1f * Global.stat.SoundModifier;
+	}
 	void OnCollisionEnter2D(Collision2D other) {
 		if (gameObject.tag.Contains ("Blue")) {
 			if (other.gameObject.tag == "RedSuicide" || other.gameObject.tag == "RedShooter" || other.gameObject.tag == "RedBlocker") {

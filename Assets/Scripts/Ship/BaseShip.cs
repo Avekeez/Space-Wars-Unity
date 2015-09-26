@@ -48,7 +48,7 @@ public class BaseShip : MonoBehaviour {
 		}
         transform.GetChild (0).gameObject.GetComponent<ParticleSystem> ().Play ();
 		StartCoroutine (ignoreBaseTemp ());
-		GetComponent<AudioSource> ().volume = 0.1f * Global.stat.SoundModifier;
+		//GetComponent<AudioSource> ().volume = 0.1f * Global.stat.SoundModifier;
 	}
 
 	void OnCollisionEnter2D(Collision2D other) {
